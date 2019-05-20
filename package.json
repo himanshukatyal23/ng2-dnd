@@ -1,5 +1,5 @@
 {
-  "name": "ng2-dnd",
+  "name": "@vpms/ng2-dnd",
   "description": "Angular 2 Drag-and-Drop without dependencies",
   "version": "5.0.3",
   "scripts": {
