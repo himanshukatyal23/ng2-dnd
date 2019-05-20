@@ -2,7 +2,7 @@
 // This project is licensed under the terms of the MIT license.
 // https://github.com/akserg/ng2-dnd
 
-import {Injectable, ChangeDetectorRef, ViewRef} from '@angular/core';
+import { Injectable, ChangeDetectorRef, ViewRef, OnDestroy, OnInit } from '@angular/core';
 import {ElementRef} from '@angular/core';
 
 import { DragDropConfig, DragImage } from './dnd.config';
@@ -10,7 +10,7 @@ import { DragDropService } from './dnd.service';
 import { isString, isFunction, isPresent, createImage, callFun } from './dnd.utils';
 
 @Injectable()
-export abstract class AbstractComponent {
+export abstract class AbstractComponent implements OnDestroy, OnInit {
     _elem: HTMLElement;
     _dragHandle: HTMLElement;
     _dragHelper: HTMLElement;
@@ -98,6 +98,9 @@ export abstract class AbstractComponent {
         this._defaultCursor = _config.defaultCursor;
         this._elem = elemRef.nativeElement;
         this._elem.style.cursor = this._defaultCursor;  // set default cursor on our element
+    }
+
+    public ngOnInit() {
         //
         // DROP events
         //
@@ -183,6 +186,16 @@ export abstract class AbstractComponent {
             let cursorelem = (this._dragHandle) ? this._dragHandle : this._elem;
             cursorelem.style.cursor = this._defaultCursor;
         };
+    }
+ 
+    public ngOnDestroy() {
+        this._elem.ondragenter = undefined;
+        this._elem.ondragend = undefined;
+        this._elem.ondragstart = undefined;
+        this._elem.onmousedown = undefined;
+        this._elem.ondrop = undefined;
+        this._elem.ondragleave = undefined;
+        this._elem.ondragover = undefined;
     }
 
     public setDragHandle(elem: HTMLElement) {
